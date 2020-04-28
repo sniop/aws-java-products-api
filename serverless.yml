@@ -30,7 +30,8 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
-      Resource: arn:aws:dynamodb:${self:provider.region}:*:table/${self:provider.environment.PRODUCTS_TABLE_NAME}
+      Resource:
+        - { "Fn::GetAtt": ["ProductsDynamoDBTable", "Arn" ] }
   environment:
     PRODUCTS_TABLE_NAME: ${self:custom.productsTableName}
 
