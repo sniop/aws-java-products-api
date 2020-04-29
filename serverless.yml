@@ -13,8 +13,22 @@
 
 service: products-api
 
+plugins:
+  - serverless-iam-roles-per-function
+  - serverless-dynamodb-local
+  - serverless-offline
+
 custom:
-  productsTableName: 'java-products-${self:provider.stage}'
+  serverless-offline:
+    port: 3003
+
+  dynamodb:
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+    stages:
+      - dev
 
 provider:
   name: aws
@@ -33,9 +47,10 @@ provider:
       Resource:
         - { "Fn::GetAtt": ["ProductsDynamoDBTable", "Arn" ] }
   environment:
-    PRODUCTS_TABLE_NAME: ${self:custom.productsTableName}
+    PRODUCTS_TABLE_NAME: java-products-${self:provider.stage}
 
 package:
+  individually: true
   artifact: 'target/${self:service}-${self:provider.stage}.jar'
 
 functions:
@@ -69,7 +84,7 @@ resources:
     ProductsDynamoDBTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:custom.productsTableName}
+        TableName: ${self:provider.environment.PRODUCTS_TABLE_NAME
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S

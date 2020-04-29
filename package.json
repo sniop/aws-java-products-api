@@ -1,0 +1,12 @@
+{
+  "name": "aws-sls-gw-dynamodb-dbmapper",
+  "version": "1.0.0",
+  "description": "playground to test api-gateway , dynamo-db and Lambda",
+  "main": "dummy-handler.js",
+  "devDependencies": {
+    "serverless-dynamodb-local": "^0.2.38",
+    "serverless-iam-roles-per-function": "^1.0.4",
+    "serverless-offline": "bytekast/serverless-offline#java8-runtime"
+  },
+  "author": "Abhishek Sharma"
+}

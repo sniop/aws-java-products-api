@@ -6,6 +6,10 @@ target
 .classpath
 .idea
 
+# node generated Files
+node_modules
+package-lock.json
+
 # Package Files
 *.jar
 *.war
