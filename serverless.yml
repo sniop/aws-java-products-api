@@ -84,7 +84,7 @@ resources:
     ProductsDynamoDBTable:
       Type: AWS::DynamoDB::Table
       Properties:
-        TableName: ${self:provider.environment.PRODUCTS_TABLE_NAME
+        TableName: ${self:provider.environment.PRODUCTS_TABLE_NAME}
         AttributeDefinitions:
           - AttributeName: id
             AttributeType: S
