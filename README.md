@@ -73,6 +73,22 @@ $ mvn clean install
 
 We can see that we have an artifact in the `target` folder named `products-api-dev.jar`.
 
+## Running the code locally using serverless-offline
+
+* java-invoke-local setup for debugging
+    * Setup Intellij-Jar Application
+        * name : java-invoke-local-server
+        * path-to-jar: ~/aws-java-products-api/node_modules/java-invoke-local/build/libs/java-invoke-local-all.jar
+        * program-args: --server
+            * this will start the server
+        * Environment Variables
+            * PRODUCTS_TABLE_NAME=java-products-dev;IS_OFFLINE=true
+                * not sure why but java-invoke-local-server does not seems to have access to environment variables defined in serverless.yml file , 
+                they these not to be defined again
+    * Start Java-invoke-local-server in debug mode
+* $ sls offline start  
+
+
 ## Deploy the serverless app
 
 ```
