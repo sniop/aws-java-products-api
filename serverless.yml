@@ -14,6 +14,8 @@
 service: products-api
 
 plugins:
+  - serverless-reqvalidator-plugin
+  - serverless-aws-documentation
   - serverless-iam-roles-per-function
   - serverless-dynamodb-local
   - serverless-offline
@@ -29,6 +31,16 @@ custom:
       migrate: true
     stages:
       - dev
+
+  documentation:
+    api:
+      info:
+        version: v1.0.1
+        title: products-api
+    models:
+      - name: productModel
+        contentType: application/json
+        schema: ${file(models/productModel.json)}
 
 provider:
   name: aws
@@ -53,6 +65,7 @@ package:
   individually: true
   artifact: 'target/${self:service}-${self:provider.stage}.jar'
 
+
 functions:
   listProducts:
     handler: com.serverless.ListProductsHandler
@@ -72,6 +85,10 @@ functions:
       - http:
           path: /products
           method: post
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            requestModels:
+              application/json: productModel
   deleteProduct:
     handler: com.serverless.DeleteProductHandler
     events:
@@ -96,3 +113,12 @@ resources:
           - AttributeName: name
             KeyType: RANGE
         BillingMode: PAY_PER_REQUEST
+
+    RequestBodyValidator:
+      Type: AWS::ApiGateway::RequestValidator
+      Properties:
+        Name: 'RequestBodyValidator'
+        RestApiId:
+          Ref: ApiGatewayRestApi
+        ValidateRequestBody: true
+        ValidateRequestParameters: false
