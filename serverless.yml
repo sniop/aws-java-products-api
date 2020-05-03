@@ -89,6 +89,16 @@ functions:
           documentation:
             requestModels:
               application/json: productModel
+  updateProduct:
+    handler: com.serverless.UpdateProductHandler
+    events:
+      - http:
+          path: /products
+          method: put
+          reqValidatorName: RequestBodyValidator
+          documentation:
+            requestModels:
+              application/json: productModel
   deleteProduct:
     handler: com.serverless.DeleteProductHandler
     events:

@@ -47,28 +47,6 @@ Create the java artifact (jar) by:
 ```
 $ cd aws-java-products-api
 $ mvn clean install
-
-[INFO] Scanning for projects...
-[INFO]
-[INFO] --------------------< com.serverless:products-api >---------------------
-[INFO] Building products-api dev
-[INFO] --------------------------------[ jar ]---------------------------------
-[INFO]
-[INFO] --- maven-clean-plugin:2.5:clean (default-clean) @ products-api ---
-[INFO] Deleting /Users/rupakg/projects/svrless/apps/aws-java-products-api/target
-
-...
-...
-
-[INFO] --- maven-install-plugin:2.4:install (default-install) @ products-api ---
-[INFO] Installing /Users/rupakg/projects/svrless/apps/aws-java-products-api/target/products-api-dev.jar to /Users/rupakg/.m2/repository/com/serverless/products-api/dev/products-api-dev.jar
-[INFO] Installing /Users/rupakg/projects/svrless/apps/aws-java-products-api/pom.xml to /Users/rupakg/.m2/repository/com/serverless/products-api/dev/products-api-dev.pom
-[INFO] ------------------------------------------------------------------------
-[INFO] BUILD SUCCESS
-[INFO] ------------------------------------------------------------------------
-[INFO] Total time: 2.790 s
-[INFO] Finished at: 2018-04-08T19:58:15-04:00
-[INFO] ------------------------------------------------------------------------
 ```
 
 We can see that we have an artifact in the `target` folder named `products-api-dev.jar`.
@@ -86,43 +64,15 @@ We can see that we have an artifact in the `target` folder named `products-api-d
                 * not sure why but java-invoke-local-server does not seems to have access to environment variables defined in serverless.yml file , 
                 they these not to be defined again
     * Start Java-invoke-local-server in debug mode
-* $ sls offline start  
+```
+$ sls offline start  
+```
 
 
 ## Deploy the serverless app
 
 ```
 $ sls deploy
-
-Serverless: Packaging service...
-Serverless: Creating Stack...
-Serverless: Checking Stack create progress...
-.....
-Serverless: Stack create finished...
-Serverless: Uploading CloudFormation file to S3...
-Serverless: Uploading artifacts...
-Serverless: Validating template...
-Serverless: Updating Stack...
-Serverless: Checking Stack update progress...
-..................................
-Serverless: Stack update finished...
-Service Information
-service: products-api
-stage: dev
-region: us-east-1
-stack: products-api-dev
-api keys:
-  None
-endpoints:
-  GET - https://xxxxxxxxx.execute-api.us-east-1.amazonaws.com/dev/products
-  GET - https://xxxxxxxxx.execute-api.us-east-1.amazonaws.com/dev/products/{id}
-  POST - https://xxxxxxxxx.execute-api.us-east-1.amazonaws.com/dev/products
-  DELETE - https://xxxxxxxxx.execute-api.us-east-1.amazonaws.com/dev/products/{id}
-functions:
-  listProducts: products-api-dev-listProducts
-  getProduct: products-api-dev-getProduct
-  createProduct: products-api-dev-createProduct
-  deleteProduct: products-api-dev-deleteProduct
 ```
 
 ## Test the API
@@ -191,25 +141,6 @@ curl -X DELETE https://xxxxxxxxxx.execute-api.us-east-1.amazonaws.com/dev/produc
 
 ```
 $ serverless logs --function getProduct
-
-START RequestId: 34f45684-3dd0-11e8-bf8a-7f961671b2de Version: $LATEST
-...
-
-2018-04-11 21:35:14 <34f45684-3dd0-11e8-bf8a-7f961671b2de> DEBUG org.apache.http.wire:86 - http-outgoing-0 >> "{"TableName":"java-products-dev","ConsistentRead":true,"ScanIndexForward":true,"KeyConditionExpression":"id = :v1","ExpressionAttributeValues":{":v1":{"S":"6f1dfeb9-ea08-4161-8877-f6cc724b39e3"}}}"
-
-...
-
-2018-04-11 21:35:14 <34f45684-3dd0-11e8-bf8a-7f961671b2de> DEBUG org.apache.http.wire:86 - http-outgoing-0 << "{"Count":1,"Items":[{"price":{"N":"9.99"},"id":{"S":"6f1dfeb9-ea08-4161-8877-f6cc724b39e3"},"name":{"S":"Product1"}}],"ScannedCount":1}"
-
-...
-
-2018-04-11 21:35:14 <34f45684-3dd0-11e8-bf8a-7f961671b2de> DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager:314 - Connection [id: 0][route: {s}->https://dynamodb.us-east-1.amazonaws.com:443] can be kept alive for 60.0 seconds
-2018-04-11 21:35:14 <34f45684-3dd0-11e8-bf8a-7f961671b2de> DEBUG org.apache.http.impl.conn.PoolingHttpClientConnectionManager:320 - Connection released: [id: 0][route: {s}->https://dynamodb.us-east-1.amazonaws.com:443][total kept alive: 1; route allocated: 1 of 50; total allocated: 1 of 50]
-2018-04-11 21:35:14 <34f45684-3dd0-11e8-bf8a-7f961671b2de> DEBUG com.amazonaws.request:87 - Received successful response: 200, AWS Request ID: MT1EV3AV07T9OD0MJH9VBJSIB7VV4KQNSO5AEMVJF66Q9ASUAAJG
-2018-04-11 21:35:14 <34f45684-3dd0-11e8-bf8a-7f961671b2de> DEBUG com.amazonaws.requestId:136 - x-amzn-RequestId: MT1EV3AV07T9OD0MJH9VBJSIB7VV4KQNSO5AEMVJF66Q9ASUAAJG
-2018-04-11 21:35:14 <34f45684-3dd0-11e8-bf8a-7f961671b2de> INFO  com.serverless.dal.Product:107 - Products - get(): product - Product [id=6f1dfeb9-ea08-4161-8877-f6cc724b39e3, name=Product1, price=$9.990000]
-END RequestId: 34f45684-3dd0-11e8-bf8a-7f961671b2de
-REPORT RequestId: 34f45684-3dd0-11e8-bf8a-7f961671b2de	Duration: 5147.00 ms	Billed Duration: 5200 ms 	Memory Size: 1024 MB	Max Memory Used: 97 MB
 ```
 
 ## View the Metrics

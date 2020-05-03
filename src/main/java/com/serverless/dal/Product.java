@@ -104,7 +104,7 @@ public class Product {
         return product;
     }
 
-    public void save(Product product) throws IOException {
+    public void save(Product product) {
         logger.info("Products - save(): " + product.toString());
 
         Map<String, ExpectedAttributeValue> expectedAttributes = new HashMap<>();
@@ -114,6 +114,12 @@ public class Product {
         saveExpression.setExpected(expectedAttributes);
 
         this.mapper.save(product,saveExpression);
+    }
+
+    public void update(Product product) {
+        logger.info("Products - update(): " + product.toString());
+
+        this.mapper.save(product);
     }
 
     public Boolean delete(String id) throws IOException {
