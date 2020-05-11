@@ -15,7 +15,7 @@ service: products-api
 
 plugins:
   - serverless-dynamodb-local
-  - serverless-plugin-offline-dynamodb-stream
+#  - serverless-plugin-offline-dynamodb-stream
   - serverless-reqvalidator-plugin
   - serverless-aws-documentation
   - serverless-iam-roles-per-function
@@ -32,15 +32,15 @@ custom:
       migrate: true
     stages:
       - dev
-  dynamodbStream:
-    host: localhost
-    port: 8000
-    pollForever: true
-    streams:
-      - table: ${self:provider.environment.PRODUCTS_TABLE_NAME}
-        functions:
-          - demoDynamoDbStreams
-    region: ${self:provider.region)
+#  dynamodbStream:
+#    host: localhost
+#    port: 8000
+#    pollForever: true
+#    streams:
+#      - table: ${self:provider.environment.PRODUCTS_TABLE_NAME}
+#        functions:
+#          - demoDynamoDbStreams
+#    region: ${self:provider.region)
 
 
   documentation:
@@ -125,7 +125,7 @@ functions:
           path: /products/{id}
           method: delete
   demoDynamoDbStreams:
-    handler: "com.serverless.DemoDynamoDbStreamsHandler"
+    handler: com.serverless.DemoDynamoDbStreamsHandler
     events:
       - stream:
           enabled: true
