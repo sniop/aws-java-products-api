@@ -17,7 +17,10 @@ import org.apache.log4j.Logger;
 public class Product {
 
     // get the table name from env. var. set in serverless.yml
-    private static final String PRODUCTS_TABLE_NAME = System.getenv("PRODUCTS_TABLE_NAME");
+    public static final String PRODUCTS_TABLE_NAME = System.getenv("PRODUCTS_TABLE_NAME");
+    public static final String KEY_PARTITION = "id";
+    public static final String KEY_SORT = "name";
+    public static final String ATTRIBUTE_PRICE = "price";
 
     private static DynamoDBAdapter db_adapter;
     private final AmazonDynamoDB client;

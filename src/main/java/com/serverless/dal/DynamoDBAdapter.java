@@ -23,7 +23,7 @@ public class DynamoDBAdapter {
                     .build();
         } else {
             this.client = AmazonDynamoDBClientBuilder.standard()
-                    .withRegion(Regions.US_EAST_1)
+                    .withRegion(Regions.US_EAST_2)
                     .build();
         }
     }
@@ -46,5 +46,6 @@ public class DynamoDBAdapter {
 
         return this.mapper;
     }
+
 
 }

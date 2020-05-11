@@ -5,7 +5,11 @@ import java.util.Map;
 public class Response {
 
 	private final String message;
-	private final Map<String, Object> input;
+	private  Map<String, Object> input;
+
+	public Response(String message) {
+		this.message = message;
+	}
 
 	public Response(String message, Map<String, Object> input) {
 		this.message = message;
