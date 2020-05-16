@@ -126,6 +126,12 @@ functions:
           method: delete
   demoDynamoDbStreams:
     handler: com.serverless.DemoDynamoDbStreamsHandler
+    iamRoleStatements:
+      - Effect: Allow
+        Action:
+          - SQS:SendMessage
+        Resource:
+          - !GetAtt ProductsDbStreamsErrorsQueue.Arn
     events:
       - stream:
           enabled: true
@@ -138,7 +144,7 @@ functions:
           batchWindow: 60 # in seconds
           parallelizationFactor: 1 # number of concurrent Lambda invocations for each shard of the Kinesis Stream
 #          destinations: # onFailure location for events to be sent to once it has reached the maximum number of times to retry when the function returns an error.
-#            onFailure: arn:aws:sqs:region:XXXXXX:queue
+#            onFailure: arn:aws:sqs:region:XXXXXX:queue # has to be exact URL serverless will not let you use references to find this
 resources:
   Resources:
     ProductsDynamoDBTable:
@@ -176,3 +182,21 @@ resources:
           Ref: ApiGatewayRestApi
         ValidateRequestBody: true
         ValidateRequestParameters: false
+
+    # we could have used destinations in functions directly to achieve this , but serverless requires exact URN there
+    # Declaring it like this so that we can use !Gett to find out the ARN of queue
+    DemoDynamoDbStreamsLambdaEnvConf:
+      Type: AWS::Lambda::EventInvokeConfig
+      Properties:
+        FunctionName: !Ref DemoDynamoDbStreamsLambdaFunction
+        Qualifier: "$LATEST"
+        MaximumEventAgeInSeconds: 600
+        MaximumRetryAttempts: 0
+        DestinationConfig:
+          OnFailure:
+            Destination: !GetAtt ProductsDbStreamsErrorsQueue.Arn
+
+    ProductsDbStreamsErrorsQueue:
+      Type: AWS::SQS::Queue
+      Properties:
+        QueueName: "ProductsDbStreamsErrorsQueue"
