@@ -4,6 +4,7 @@
   "description": "playground to test api-gateway , dynamo-db and Lambda",
   "main": "dummy-handler.js",
   "devDependencies": {
+    "serverless-pseudo-parameters": "^2.5.0",
     "serverless-plugin-offline-dynamodb-stream": "^1.0.19",
     "serverless-dynamodb-local": "^0.2.39",
     "serverless-iam-roles-per-function": "^1.0.4",
